@@ -1,0 +1,1043 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>第12章 pandas高级应用.md &mdash; 利用Python进行数据分析 1.0.0 文档</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/li.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="第13章 Python建模库介绍.md" href="第13章 Python建模库介绍.html" />
+    <link rel="prev" title="第11章 时间序列.md" href="第11章 时间序列.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> 利用Python进行数据分析
+          
+
+          
+            
+            <img src="_static/miao.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                大圣哔哔出品
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="第1章 准备工作.html">第1章 准备工作</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第2章 Python语法基础.html">第2章 Python语法基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第3章 Python的数据结构、函数和文件.html">第3章 Python的数据结构、函数和文件</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第4章 NumPy基础：数组和矢量计算.html">第4章 NumPy基础：数组和矢量计算</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第5章 pandas入门.html">第5章 pandas入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第6章 数据加载、存储与文件格式.html">第6章 数据加载、存储与文件格式.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第7章 数据清洗和准备.html">第7章 数据清洗和准备.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第8章 数据规整：聚合、合并和重塑.html">第8章 数据规整：聚合、合并和重塑.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第9章 绘图和可视化.html">第9章 绘图和可视化.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第10章 数据聚合与分组运算.html">第10章 数据聚合与分组运算.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第11章 时间序列.html">第11章 时间序列.md</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">第12章 pandas高级应用.md</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">12.1 分类数据</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">背景和目的</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pandas">pandas的分类类型</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">用分类进行计算</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">用分类提高性能</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">分类方法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">为建模创建虚拟变量</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#groupby">12.2 GroupBy高级应用</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">分组转换和“解封”GroupBy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">分组的时间重采样</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">12.3 链式编程技术</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">管道方法</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">12.4 总结</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="第13章 Python建模库介绍.html">第13章 Python建模库介绍.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="第14章 数据分析案例.html">第14章 数据分析案例.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="附录A NumPy高级应用.html">附录A NumPy高级应用.md</a></li>
+<li class="toctree-l1"><a class="reference internal" href="附录B 更多关于IPython的内容.html">附录B 更多关于IPython的内容（完）.md</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">利用Python进行数据分析</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>第12章 pandas高级应用.md</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/第12章 pandas高级应用.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pandas-md">
+<h1>第12章 pandas高级应用.md<a class="headerlink" href="#pandas-md" title="永久链接至标题">¶</a></h1>
+<p>前面的章节关注于不同类型的数据规整流程和NumPy、pandas与其它库的特点。随着时间的发展，pandas发展出了更多适合高级用户的功能。本章就要深入学习pandas的高级功能。</p>
+<div class="section" id="id1">
+<h2>12.1 分类数据<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>这一节介绍的是pandas的分类类型。我会向你展示通过使用它，提高性能和内存的使用率。我还会介绍一些在统计和机器学习中使用分类数据的工具。</p>
+<div class="section" id="id2">
+<h3>背景和目的<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<p>表中的一列通常会有重复的包含不同值的小集合的情况。我们已经学过了unique和value_counts，它们可以从数组提取出不同的值，并分别计算频率：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="p">;</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span>
+   <span class="o">....</span><span class="p">:</span>                     <span class="s1">&#39;apple&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">values</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">1</span>    <span class="n">orange</span>
+<span class="mi">2</span>     <span class="n">apple</span>
+<span class="mi">3</span>     <span class="n">apple</span>
+<span class="mi">4</span>     <span class="n">apple</span>
+<span class="mi">5</span>    <span class="n">orange</span>
+<span class="mi">6</span>     <span class="n">apple</span>
+<span class="mi">7</span>     <span class="n">apple</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="nb">object</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">pd</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">pd</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">14</span><span class="p">]:</span> 
+<span class="n">apple</span>     <span class="mi">6</span>
+<span class="n">orange</span>    <span class="mi">2</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<p>许多数据系统（数据仓库、统计计算或其它应用）都发展出了特定的表征重复值的方法，以进行高效的存储和计算。在数据仓库中，最好的方法是使用所谓的包含不同值的维表(Dimension Table)，将主要的参数存储为引用维表整数键：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">dim</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]:</span> <span class="n">values</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">17</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="mi">0</span>
+<span class="mi">1</span>    <span class="mi">1</span>
+<span class="mi">2</span>    <span class="mi">0</span>
+<span class="mi">3</span>    <span class="mi">0</span>
+<span class="mi">4</span>    <span class="mi">0</span>
+<span class="mi">5</span>    <span class="mi">1</span>
+<span class="mi">6</span>    <span class="mi">0</span>
+<span class="mi">7</span>    <span class="mi">0</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">18</span><span class="p">]:</span> <span class="n">dim</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">18</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">1</span>    <span class="n">orange</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="nb">object</span>
+</pre></div>
+</div>
+<p>可以使用take方法存储原始的字符串Series：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">dim</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">19</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">1</span>    <span class="n">orange</span>
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">1</span>    <span class="n">orange</span>
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="nb">object</span>
+</pre></div>
+</div>
+<p>这种用整数表示的方法称为分类或字典编码表示法。不同值得数组称为分类、字典或数据级。本书中，我们使用分类的说法。表示分类的整数值称为分类编码或简单地称为编码。</p>
+<p>分类表示可以在进行分析时大大的提高性能。你也可以在保持编码不变的情况下，对分类进行转换。一些相对简单的转变例子包括：</p>
+<ul class="simple">
+<li><p>重命名分类。</p></li>
+<li><p>加入一个新的分类，不改变已经存在的分类的顺序或位置。</p></li>
+</ul>
+</div>
+<div class="section" id="pandas">
+<h3>pandas的分类类型<a class="headerlink" href="#pandas" title="永久链接至标题">¶</a></h3>
+<p>pandas有一个特殊的分类类型，用于保存使用整数分类表示法的数据。看一个之前的Series例子：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">fruits</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;apple&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fruits</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]:</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;fruit&#39;</span><span class="p">:</span> <span class="n">fruits</span><span class="p">,</span>
+   <span class="o">....</span><span class="p">:</span>                    <span class="s1">&#39;basket_id&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">),</span>
+   <span class="o">....</span><span class="p">:</span>                    <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">),</span>
+   <span class="o">....</span><span class="p">:</span>                    <span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">)},</span>
+   <span class="o">....</span><span class="p">:</span>                   <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;basket_id&#39;</span><span class="p">,</span> <span class="s1">&#39;fruit&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">23</span><span class="p">]:</span> <span class="n">df</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">23</span><span class="p">]:</span> 
+   <span class="n">basket_id</span>   <span class="n">fruit</span>  <span class="n">count</span>    <span class="n">weight</span>
+<span class="mi">0</span>          <span class="mi">0</span>   <span class="n">apple</span>      <span class="mi">5</span>  <span class="mf">3.858058</span>
+<span class="mi">1</span>          <span class="mi">1</span>  <span class="n">orange</span>      <span class="mi">8</span>  <span class="mf">2.612708</span>
+<span class="mi">2</span>          <span class="mi">2</span>   <span class="n">apple</span>      <span class="mi">4</span>  <span class="mf">2.995627</span>
+<span class="mi">3</span>          <span class="mi">3</span>   <span class="n">apple</span>      <span class="mi">7</span>  <span class="mf">2.614279</span>
+<span class="mi">4</span>          <span class="mi">4</span>   <span class="n">apple</span>     <span class="mi">12</span>  <span class="mf">2.990859</span>
+<span class="mi">5</span>          <span class="mi">5</span>  <span class="n">orange</span>      <span class="mi">8</span>  <span class="mf">3.845227</span>
+<span class="mi">6</span>          <span class="mi">6</span>   <span class="n">apple</span>      <span class="mi">5</span>  <span class="mf">0.033553</span>
+<span class="mi">7</span>          <span class="mi">7</span>   <span class="n">apple</span>      <span class="mi">4</span>  <span class="mf">0.425778</span>
+</pre></div>
+</div>
+<p>这里，df[‘fruit’]是一个Python字符串对象的数组。我们可以通过调用它，将它转变为分类：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">24</span><span class="p">]:</span> <span class="n">fruit_cat</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fruit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="n">fruit_cat</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">25</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">1</span>    <span class="n">orange</span>
+<span class="mi">2</span>     <span class="n">apple</span>
+<span class="mi">3</span>     <span class="n">apple</span>
+<span class="mi">4</span>     <span class="n">apple</span>
+<span class="mi">5</span>    <span class="n">orange</span>
+<span class="mi">6</span>     <span class="n">apple</span>
+<span class="mi">7</span>     <span class="n">apple</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">fruit</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">apple</span><span class="p">,</span> <span class="n">orange</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>fruit_cat的值不是NumPy数组，而是一个pandas.Categorical实例：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="n">c</span> <span class="o">=</span> <span class="n">fruit_cat</span><span class="o">.</span><span class="n">values</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">categorical</span><span class="o">.</span><span class="n">Categorical</span>
+</pre></div>
+</div>
+<p>分类对象有categories和codes属性：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">categories</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">Index</span><span class="p">([</span><span class="s1">&#39;apple&#39;</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">c</span><span class="o">.</span><span class="n">codes</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>你可将DataFrame的列通过分配转换结果，转换为分类：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fruit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fruit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="n">df</span><span class="o">.</span><span class="n">fruit</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span>
+<span class="mi">0</span>     <span class="n">apple</span>
+<span class="mi">1</span>    <span class="n">orange</span>
+<span class="mi">2</span>     <span class="n">apple</span>
+<span class="mi">3</span>     <span class="n">apple</span>
+<span class="mi">4</span>     <span class="n">apple</span>
+<span class="mi">5</span>    <span class="n">orange</span>
+<span class="mi">6</span>     <span class="n">apple</span>
+<span class="mi">7</span>     <span class="n">apple</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">fruit</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">apple</span><span class="p">,</span> <span class="n">orange</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>你还可以从其它Python序列直接创建pandas.Categorical：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="n">my_categories</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="n">my_categories</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">33</span><span class="p">]:</span> 
+<span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">foo</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>如果你已经从其它源获得了分类编码，你还可以使用from_codes构造器：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]:</span> <span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="n">codes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="n">my_cats_2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="o">.</span><span class="n">from_codes</span><span class="p">(</span><span class="n">codes</span><span class="p">,</span> <span class="n">categories</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="n">my_cats_2</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">37</span><span class="p">]:</span> 
+<span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>与显示指定不同，分类变换不认定指定的分类顺序。因此取决于输入数据的顺序，categories数组的顺序会不同。当使用from_codes或其它的构造器时，你可以指定分类一个有意义的顺序：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">ordered_cat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="o">.</span><span class="n">from_codes</span><span class="p">(</span><span class="n">codes</span><span class="p">,</span> <span class="n">categories</span><span class="p">,</span>
+   <span class="o">....</span><span class="p">:</span>                                         <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="n">ordered_cat</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">39</span><span class="p">]:</span> 
+<span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">foo</span> <span class="o">&lt;</span> <span class="n">bar</span> <span class="o">&lt;</span> <span class="n">baz</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>输出[foo &lt; bar &lt; baz]指明‘foo’位于‘bar’的前面，以此类推。无序的分类实例可以通过as_ordered排序：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">my_cats_2</span><span class="o">.</span><span class="n">as_ordered</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">40</span><span class="p">]:</span> 
+<span class="p">[</span><span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">baz</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="n">bar</span><span class="p">]</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">foo</span> <span class="o">&lt;</span> <span class="n">bar</span> <span class="o">&lt;</span> <span class="n">baz</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>最后要注意，分类数据不需要字符串，尽管我仅仅展示了字符串的例子。分类数组可以包括任意不可变类型。</p>
+</div>
+<div class="section" id="id3">
+<h3>用分类进行计算<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>与非编码版本（比如字符串数组）相比，使用pandas的Categorical有些类似。某些pandas组件，比如groupby函数，更适合进行分类。还有一些函数可以使用有序标志位。</p>
+<p>来看一些随机的数值数据，使用pandas.qcut面元函数。它会返回pandas.Categorical，我们之前使用过pandas.cut，但没解释分类是如何工作的：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]:</span> <span class="n">draws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">draws</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.2047</span><span class="p">,</span>  <span class="mf">0.4789</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5194</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5557</span><span class="p">,</span>  <span class="mf">1.9658</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>计算这个数据的分位面元，提取一些统计信息：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">draws</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">45</span><span class="p">]:</span> <span class="n">bins</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">45</span><span class="p">]:</span> 
+<span class="p">[(</span><span class="o">-</span><span class="mf">0.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0101</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.0101</span><span class="p">,</span> <span class="mf">0.63</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0101</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0101</span><span class="p">],</span> <span class="p">(</span><span class="mf">0.63</span><span class="p">,</span>
+ <span class="mf">3.928</span><span class="p">],</span> <span class="o">...</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.0101</span><span class="p">,</span> <span class="mf">0.63</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0101</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.684</span><span class="p">],</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.0101</span><span class="p">,</span> <span class="mf">0.63</span>
+<span class="p">],</span> <span class="p">(</span><span class="mf">0.63</span><span class="p">,</span> <span class="mf">3.928</span><span class="p">]]</span>
+<span class="n">Length</span><span class="p">:</span> <span class="mi">1000</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">interval</span><span class="p">[</span><span class="n">float64</span><span class="p">]):</span> <span class="p">[(</span><span class="o">-</span><span class="mf">2.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.684</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0101</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.010</span>
+<span class="mi">1</span><span class="p">,</span> <span class="mf">0.63</span><span class="p">]</span> <span class="o">&lt;</span>
+                                    <span class="p">(</span><span class="mf">0.63</span><span class="p">,</span> <span class="mf">3.928</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>虽然有用，确切的样本分位数与分位的名称相比，不利于生成汇总。我们可以使用labels参数qcut，实现目的：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">draws</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Q1&#39;</span><span class="p">,</span> <span class="s1">&#39;Q2&#39;</span><span class="p">,</span> <span class="s1">&#39;Q3&#39;</span><span class="p">,</span> <span class="s1">&#39;Q4&#39;</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="n">bins</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">47</span><span class="p">]:</span> 
+<span class="p">[</span><span class="n">Q2</span><span class="p">,</span> <span class="n">Q3</span><span class="p">,</span> <span class="n">Q2</span><span class="p">,</span> <span class="n">Q2</span><span class="p">,</span> <span class="n">Q4</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">Q3</span><span class="p">,</span> <span class="n">Q2</span><span class="p">,</span> <span class="n">Q1</span><span class="p">,</span> <span class="n">Q3</span><span class="p">,</span> <span class="n">Q4</span><span class="p">]</span>
+<span class="n">Length</span><span class="p">:</span> <span class="mi">1000</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">Q1</span> <span class="o">&lt;</span> <span class="n">Q2</span> <span class="o">&lt;</span> <span class="n">Q3</span> <span class="o">&lt;</span> <span class="n">Q4</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">48</span><span class="p">]:</span> <span class="n">bins</span><span class="o">.</span><span class="n">codes</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">48</span><span class="p">]:</span> <span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>加上标签的面元分类不包含数据面元边界的信息，因此可以使用groupby提取一些汇总信息：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">49</span><span class="p">]:</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">bins</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;quartile&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">50</span><span class="p">]:</span> <span class="n">results</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">draws</span><span class="p">)</span>
+   <span class="o">....</span><span class="p">:</span>            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+   <span class="o">....</span><span class="p">:</span>            <span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">])</span>
+   <span class="o">....</span><span class="p">:</span>            <span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">51</span><span class="p">]:</span> <span class="n">results</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">51</span><span class="p">]:</span> 
+  <span class="n">quartile</span>  <span class="n">count</span>       <span class="nb">min</span>       <span class="nb">max</span>
+<span class="mi">0</span>       <span class="n">Q1</span>    <span class="mi">250</span> <span class="o">-</span><span class="mf">2.949343</span> <span class="o">-</span><span class="mf">0.685484</span>
+<span class="mi">1</span>       <span class="n">Q2</span>    <span class="mi">250</span> <span class="o">-</span><span class="mf">0.683066</span> <span class="o">-</span><span class="mf">0.010115</span>
+<span class="mi">2</span>       <span class="n">Q3</span>    <span class="mi">250</span> <span class="o">-</span><span class="mf">0.010032</span>  <span class="mf">0.628894</span>
+<span class="mi">3</span>       <span class="n">Q4</span>    <span class="mi">250</span>  <span class="mf">0.634238</span>  <span class="mf">3.927528</span>
+</pre></div>
+</div>
+<p>分位数列保存了原始的面元分类信息，包括排序：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">52</span><span class="p">]:</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;quartile&#39;</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">52</span><span class="p">]:</span>
+<span class="mi">0</span>    <span class="n">Q1</span>
+<span class="mi">1</span>    <span class="n">Q2</span>
+<span class="mi">2</span>    <span class="n">Q3</span>
+<span class="mi">3</span>    <span class="n">Q4</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">quartile</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">Q1</span> <span class="o">&lt;</span> <span class="n">Q2</span> <span class="o">&lt;</span> <span class="n">Q3</span> <span class="o">&lt;</span> <span class="n">Q4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>用分类提高性能<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>如果你是在一个特定数据集上做大量分析，将其转换为分类可以极大地提高效率。DataFrame列的分类使用的内存通常少的多。来看一些包含一千万元素的Series，和一些不同的分类：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">53</span><span class="p">]:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">10000000</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">54</span><span class="p">]:</span> <span class="n">draws</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">55</span><span class="p">]:</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;baz&#39;</span><span class="p">,</span> <span class="s1">&#39;qux&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">//</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>现在，将标签转换为分类：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">56</span><span class="p">]:</span> <span class="n">categories</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这时，可以看到标签使用的内存远比分类多：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">57</span><span class="p">]:</span> <span class="n">labels</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">57</span><span class="p">]:</span> <span class="mi">80000080</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">58</span><span class="p">]:</span> <span class="n">categories</span><span class="o">.</span><span class="n">memory_usage</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">58</span><span class="p">]:</span> <span class="mi">10000272</span>
+</pre></div>
+</div>
+<p>转换为分类不是没有代价的，但这是一次性的代价：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">59</span><span class="p">]:</span> <span class="o">%</span><span class="n">time</span> <span class="n">_</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">CPU</span> <span class="n">times</span><span class="p">:</span> <span class="n">user</span> <span class="mi">490</span> <span class="n">ms</span><span class="p">,</span> <span class="n">sys</span><span class="p">:</span> <span class="mi">240</span> <span class="n">ms</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="mi">730</span> <span class="n">ms</span>
+<span class="n">Wall</span> <span class="n">time</span><span class="p">:</span> <span class="mi">726</span> <span class="n">ms</span>
+</pre></div>
+</div>
+<p>GroupBy使用分类操作明显更快，是因为底层的算法使用整数编码数组，而不是字符串数组。</p>
+</div>
+<div class="section" id="id5">
+<h3>分类方法<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>包含分类数据的Series有一些特殊的方法，类似于Series.str字符串方法。它还提供了方便的分类和编码的使用方法。看下面的Series：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">60</span><span class="p">]:</span> <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">61</span><span class="p">]:</span> <span class="n">cat_s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">62</span><span class="p">]:</span> <span class="n">cat_s</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">62</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="n">a</span>
+<span class="mi">1</span>    <span class="n">b</span>
+<span class="mi">2</span>    <span class="n">c</span>
+<span class="mi">3</span>    <span class="n">d</span>
+<span class="mi">4</span>    <span class="n">a</span>
+<span class="mi">5</span>    <span class="n">b</span>
+<span class="mi">6</span>    <span class="n">c</span>
+<span class="mi">7</span>    <span class="n">d</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>特别的cat属性提供了分类方法的入口：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">63</span><span class="p">]:</span> <span class="n">cat_s</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">63</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="mi">0</span>
+<span class="mi">1</span>    <span class="mi">1</span>
+<span class="mi">2</span>    <span class="mi">2</span>
+<span class="mi">3</span>    <span class="mi">3</span>
+<span class="mi">4</span>    <span class="mi">0</span>
+<span class="mi">5</span>    <span class="mi">1</span>
+<span class="mi">6</span>    <span class="mi">2</span>
+<span class="mi">7</span>    <span class="mi">3</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int8</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">64</span><span class="p">]:</span> <span class="n">cat_s</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">categories</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">64</span><span class="p">]:</span> <span class="n">Index</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>假设我们知道这个数据的实际分类集，超出了数据中的四个值。我们可以使用set_categories方法改变它们：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">65</span><span class="p">]:</span> <span class="n">actual_categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">66</span><span class="p">]:</span> <span class="n">cat_s2</span> <span class="o">=</span> <span class="n">cat_s</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">set_categories</span><span class="p">(</span><span class="n">actual_categories</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">67</span><span class="p">]:</span> <span class="n">cat_s2</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">67</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="n">a</span>
+<span class="mi">1</span>    <span class="n">b</span>
+<span class="mi">2</span>    <span class="n">c</span>
+<span class="mi">3</span>    <span class="n">d</span>
+<span class="mi">4</span>    <span class="n">a</span>
+<span class="mi">5</span>    <span class="n">b</span>
+<span class="mi">6</span>    <span class="n">c</span>
+<span class="mi">7</span>    <span class="n">d</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>虽然数据看起来没变，新的分类将反映在它们的操作中。例如，如果有的话，value_counts表示分类：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="n">cat_s</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">68</span><span class="p">]:</span> 
+<span class="n">d</span>    <span class="mi">2</span>
+<span class="n">c</span>    <span class="mi">2</span>
+<span class="n">b</span>    <span class="mi">2</span>
+<span class="n">a</span>    <span class="mi">2</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">cat_s2</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">69</span><span class="p">]:</span> 
+<span class="n">d</span>    <span class="mi">2</span>
+<span class="n">c</span>    <span class="mi">2</span>
+<span class="n">b</span>    <span class="mi">2</span>
+<span class="n">a</span>    <span class="mi">2</span>
+<span class="n">e</span>    <span class="mi">0</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<p>在大数据集中，分类经常作为节省内存和高性能的便捷工具。过滤完大DataFrame或Series之后，许多分类可能不会出现在数据中。我们可以使用remove_unused_categories方法删除没看到的分类：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">70</span><span class="p">]:</span> <span class="n">cat_s3</span> <span class="o">=</span> <span class="n">cat_s</span><span class="p">[</span><span class="n">cat_s</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="n">cat_s3</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">71</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="n">a</span>
+<span class="mi">1</span>    <span class="n">b</span>
+<span class="mi">4</span>    <span class="n">a</span>
+<span class="mi">5</span>    <span class="n">b</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">72</span><span class="p">]:</span> <span class="n">cat_s3</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">remove_unused_categories</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">72</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="n">a</span>
+<span class="mi">1</span>    <span class="n">b</span>
+<span class="mi">4</span>    <span class="n">a</span>
+<span class="mi">5</span>    <span class="n">b</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">category</span>
+<span class="n">Categories</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>表12-1列出了可用的分类方法。</p>
+<p><img alt="表12-1 pandas的Series的分类方法" src="http://upload-images.jianshu.io/upload_images/7178691-6c602152c2bba658.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" /></p>
+</div>
+<div class="section" id="id6">
+<h3>为建模创建虚拟变量<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>当你使用统计或机器学习工具时，通常会将分类数据转换为虚拟变量，也称为one-hot编码。这包括创建一个不同类别的列的DataFrame；这些列包含给定分类的1s，其它为0。</p>
+<p>看前面的例子：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">73</span><span class="p">]:</span> <span class="n">cat_s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>前面的第7章提到过，pandas.get_dummies函数可以转换这个分类数据为包含虚拟变量的DataFrame：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">74</span><span class="p">]:</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">cat_s</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">74</span><span class="p">]:</span> 
+   <span class="n">a</span>  <span class="n">b</span>  <span class="n">c</span>  <span class="n">d</span>
+<span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>
+<span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>
+<span class="mi">2</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>
+<span class="mi">3</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>
+<span class="mi">4</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>
+<span class="mi">5</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>
+<span class="mi">6</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>
+<span class="mi">7</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="groupby">
+<h2>12.2 GroupBy高级应用<a class="headerlink" href="#groupby" title="永久链接至标题">¶</a></h2>
+<p>尽管我们在第10章已经深度学习了Series和DataFrame的Groupby方法，还有一些方法也是很有用的。</p>
+<div class="section" id="id7">
+<h3>分组转换和“解封”GroupBy<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>在第10章，我们在分组操作中学习了apply方法，进行转换。还有另一个transform方法，它与apply很像，但是对使用的函数有一定限制：</p>
+<ul class="simple">
+<li><p>它可以产生向分组形状广播标量值</p></li>
+<li><p>它可以产生一个和输入组形状相同的对象</p></li>
+<li><p>它不能修改输入</p></li>
+</ul>
+<p>来看一个简单的例子：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">75</span><span class="p">]:</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
+   <span class="o">....</span><span class="p">:</span>                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">12.</span><span class="p">)})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">76</span><span class="p">]:</span> <span class="n">df</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">76</span><span class="p">]:</span> 
+   <span class="n">key</span>  <span class="n">value</span>
+<span class="mi">0</span>    <span class="n">a</span>    <span class="mf">0.0</span>
+<span class="mi">1</span>    <span class="n">b</span>    <span class="mf">1.0</span>
+<span class="mi">2</span>    <span class="n">c</span>    <span class="mf">2.0</span>
+<span class="mi">3</span>    <span class="n">a</span>    <span class="mf">3.0</span>
+<span class="mi">4</span>    <span class="n">b</span>    <span class="mf">4.0</span>
+<span class="mi">5</span>    <span class="n">c</span>    <span class="mf">5.0</span>
+<span class="mi">6</span>    <span class="n">a</span>    <span class="mf">6.0</span>
+<span class="mi">7</span>    <span class="n">b</span>    <span class="mf">7.0</span>
+<span class="mi">8</span>    <span class="n">c</span>    <span class="mf">8.0</span>
+<span class="mi">9</span>    <span class="n">a</span>    <span class="mf">9.0</span>
+<span class="mi">10</span>   <span class="n">b</span>   <span class="mf">10.0</span>
+<span class="mi">11</span>   <span class="n">c</span>   <span class="mf">11.0</span>
+</pre></div>
+</div>
+<p>按键进行分组：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">78</span><span class="p">]:</span> 
+<span class="n">key</span>
+<span class="n">a</span>    <span class="mf">4.5</span>
+<span class="n">b</span>    <span class="mf">5.5</span>
+<span class="n">c</span>    <span class="mf">6.5</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>假设我们想产生一个和df[‘value’]形状相同的Series，但值替换为按键分组的平均值。我们可以传递函数lambda x: x.mean()进行转换：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">79</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="mf">4.5</span>
+<span class="mi">1</span>     <span class="mf">5.5</span>
+<span class="mi">2</span>     <span class="mf">6.5</span>
+<span class="mi">3</span>     <span class="mf">4.5</span>
+<span class="mi">4</span>     <span class="mf">5.5</span>
+<span class="mi">5</span>     <span class="mf">6.5</span>
+<span class="mi">6</span>     <span class="mf">4.5</span>
+<span class="mi">7</span>     <span class="mf">5.5</span>
+<span class="mi">8</span>     <span class="mf">6.5</span>
+<span class="mi">9</span>     <span class="mf">4.5</span>
+<span class="mi">10</span>    <span class="mf">5.5</span>
+<span class="mi">11</span>    <span class="mf">6.5</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>对于内置的聚合函数，我们可以传递一个字符串假名作为GroupBy的agg方法：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">80</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">80</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="mf">4.5</span>
+<span class="mi">1</span>     <span class="mf">5.5</span>
+<span class="mi">2</span>     <span class="mf">6.5</span>
+<span class="mi">3</span>     <span class="mf">4.5</span>
+<span class="mi">4</span>     <span class="mf">5.5</span>
+<span class="mi">5</span>     <span class="mf">6.5</span>
+<span class="mi">6</span>     <span class="mf">4.5</span>
+<span class="mi">7</span>     <span class="mf">5.5</span>
+<span class="mi">8</span>     <span class="mf">6.5</span>
+<span class="mi">9</span>     <span class="mf">4.5</span>
+<span class="mi">10</span>    <span class="mf">5.5</span>
+<span class="mi">11</span>    <span class="mf">6.5</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>与apply类似，transform的函数会返回Series，但是结果必须与输入大小相同。举个例子，我们可以用lambda函数将每个分组乘以2：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">81</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">81</span><span class="p">]:</span> 
+<span class="mi">0</span>      <span class="mf">0.0</span>
+<span class="mi">1</span>      <span class="mf">2.0</span>
+<span class="mi">2</span>      <span class="mf">4.0</span>
+<span class="mi">3</span>      <span class="mf">6.0</span>
+<span class="mi">4</span>      <span class="mf">8.0</span>
+<span class="mi">5</span>     <span class="mf">10.0</span>
+<span class="mi">6</span>     <span class="mf">12.0</span>
+<span class="mi">7</span>     <span class="mf">14.0</span>
+<span class="mi">8</span>     <span class="mf">16.0</span>
+<span class="mi">9</span>     <span class="mf">18.0</span>
+<span class="mi">10</span>    <span class="mf">20.0</span>
+<span class="mi">11</span>    <span class="mf">22.0</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>再举一个复杂的例子，我们可以计算每个分组的降序排名：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">82</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">82</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="mf">4.0</span>
+<span class="mi">1</span>     <span class="mf">4.0</span>
+<span class="mi">2</span>     <span class="mf">4.0</span>
+<span class="mi">3</span>     <span class="mf">3.0</span>
+<span class="mi">4</span>     <span class="mf">3.0</span>
+<span class="mi">5</span>     <span class="mf">3.0</span>
+<span class="mi">6</span>     <span class="mf">2.0</span>
+<span class="mi">7</span>     <span class="mf">2.0</span>
+<span class="mi">8</span>     <span class="mf">2.0</span>
+<span class="mi">9</span>     <span class="mf">1.0</span>
+<span class="mi">10</span>    <span class="mf">1.0</span>
+<span class="mi">11</span>    <span class="mf">1.0</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>看一个由简单聚合构造的的分组转换函数：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>我们用transform或apply可以获得等价的结果：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">84</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">normalize</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">84</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">1</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">2</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">3</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">4</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">5</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">6</span>     <span class="mf">0.387298</span>
+<span class="mi">7</span>     <span class="mf">0.387298</span>
+<span class="mi">8</span>     <span class="mf">0.387298</span>
+<span class="mi">9</span>     <span class="mf">1.161895</span>
+<span class="mi">10</span>    <span class="mf">1.161895</span>
+<span class="mi">11</span>    <span class="mf">1.161895</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">85</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">normalize</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">85</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">1</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">2</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">3</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">4</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">5</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">6</span>     <span class="mf">0.387298</span>
+<span class="mi">7</span>     <span class="mf">0.387298</span>
+<span class="mi">8</span>     <span class="mf">0.387298</span>
+<span class="mi">9</span>     <span class="mf">1.161895</span>
+<span class="mi">10</span>    <span class="mf">1.161895</span>
+<span class="mi">11</span>    <span class="mf">1.161895</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>内置的聚合函数，比如mean或sum，通常比apply函数快，也比transform快。这允许我们进行一个所谓的解封（unwrapped）分组操作：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">86</span><span class="p">]:</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">86</span><span class="p">]:</span> 
+<span class="mi">0</span>     <span class="mf">4.5</span>
+<span class="mi">1</span>     <span class="mf">5.5</span>
+<span class="mi">2</span>     <span class="mf">6.5</span>
+<span class="mi">3</span>     <span class="mf">4.5</span>
+<span class="mi">4</span>     <span class="mf">5.5</span>
+<span class="mi">5</span>     <span class="mf">6.5</span>
+<span class="mi">6</span>     <span class="mf">4.5</span>
+<span class="mi">7</span>     <span class="mf">5.5</span>
+<span class="mi">8</span>     <span class="mf">6.5</span>
+<span class="mi">9</span>     <span class="mf">4.5</span>
+<span class="mi">10</span>    <span class="mf">5.5</span>
+<span class="mi">11</span>    <span class="mf">6.5</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">87</span><span class="p">]:</span> <span class="n">normalized</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">))</span> <span class="o">/</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;std&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">88</span><span class="p">]:</span> <span class="n">normalized</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">88</span><span class="p">]:</span> 
+<span class="mi">0</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">1</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">2</span>    <span class="o">-</span><span class="mf">1.161895</span>
+<span class="mi">3</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">4</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">5</span>    <span class="o">-</span><span class="mf">0.387298</span>
+<span class="mi">6</span>     <span class="mf">0.387298</span>
+<span class="mi">7</span>     <span class="mf">0.387298</span>
+<span class="mi">8</span>     <span class="mf">0.387298</span>
+<span class="mi">9</span>     <span class="mf">1.161895</span>
+<span class="mi">10</span>    <span class="mf">1.161895</span>
+<span class="mi">11</span>    <span class="mf">1.161895</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>解封分组操作可能包括多个分组聚合，但是矢量化操作还是会带来收益。</p>
+</div>
+<div class="section" id="id8">
+<h3>分组的时间重采样<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>对于时间序列数据，resample方法从语义上是一个基于内在时间的分组操作。下面是一个示例表：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">89</span><span class="p">]:</span> <span class="n">N</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">90</span><span class="p">]:</span> <span class="n">times</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s1">&#39;2017-05-20 00:00&#39;</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;1min&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">91</span><span class="p">]:</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">times</span><span class="p">,</span>
+   <span class="o">....</span><span class="p">:</span>                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">92</span><span class="p">]:</span> <span class="n">df</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">92</span><span class="p">]:</span> 
+                  <span class="n">time</span>  <span class="n">value</span>
+<span class="mi">0</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">0</span>
+<span class="mi">1</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">1</span>
+<span class="mi">2</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">2</span>
+<span class="mi">3</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">03</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">3</span>
+<span class="mi">4</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">4</span>
+<span class="mi">5</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">5</span>
+<span class="mi">6</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">6</span>
+<span class="mi">7</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">7</span>
+<span class="mi">8</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">8</span>
+<span class="mi">9</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">9</span>
+<span class="mi">10</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>     <span class="mi">10</span>
+<span class="mi">11</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">00</span>     <span class="mi">11</span>
+<span class="mi">12</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mi">00</span>     <span class="mi">12</span>
+<span class="mi">13</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">00</span>     <span class="mi">13</span>
+<span class="mi">14</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">14</span><span class="p">:</span><span class="mi">00</span>     <span class="mi">14</span>
+</pre></div>
+</div>
+<p>这里，我们可以用time作为索引，然后重采样：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">93</span><span class="p">]:</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s1">&#39;5min&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">93</span><span class="p">]:</span> 
+                     <span class="n">value</span>
+<span class="n">time</span>                      
+<span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">5</span>
+<span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">5</span>
+<span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>      <span class="mi">5</span>
+</pre></div>
+</div>
+<p>假设DataFrame包含多个时间序列，用一个额外的分组键的列进行标记：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">94</span><span class="p">]:</span> <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">times</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+   <span class="o">....</span><span class="p">:</span>                     <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">],</span> <span class="n">N</span><span class="p">),</span>
+   <span class="o">....</span><span class="p">:</span>                     <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mf">3.</span><span class="p">)})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">95</span><span class="p">]:</span> <span class="n">df2</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">95</span><span class="p">]:</span> 
+  <span class="n">key</span>                <span class="n">time</span>  <span class="n">value</span>
+<span class="mi">0</span>   <span class="n">a</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">0.0</span>
+<span class="mi">1</span>   <span class="n">b</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">1.0</span>
+<span class="mi">2</span>   <span class="n">c</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">2.0</span>
+<span class="mi">3</span>   <span class="n">a</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">3.0</span>
+<span class="mi">4</span>   <span class="n">b</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">4.0</span>
+<span class="mi">5</span>   <span class="n">c</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">5.0</span>
+<span class="mi">6</span>   <span class="n">a</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span>    <span class="mf">6.0</span>
+</pre></div>
+</div>
+<p>要对每个key值进行相同的重采样，我们引入pandas.TimeGrouper对象：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">96</span><span class="p">]:</span> <span class="n">time_key</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">TimeGrouper</span><span class="p">(</span><span class="s1">&#39;5min&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>我们然后设定时间索引，用key和time_key分组，然后聚合：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">97</span><span class="p">]:</span> <span class="n">resampled</span> <span class="o">=</span> <span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+   <span class="o">....</span><span class="p">:</span>              <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">time_key</span><span class="p">])</span>
+   <span class="o">....</span><span class="p">:</span>              <span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">98</span><span class="p">]:</span> <span class="n">resampled</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">98</span><span class="p">]:</span> 
+                         <span class="n">value</span>
+<span class="n">key</span> <span class="n">time</span>                      
+<span class="n">a</span>   <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="mf">30.0</span>
+    <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">105.0</span>
+    <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">180.0</span>
+<span class="n">b</span>   <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="mf">35.0</span>
+    <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">110.0</span>
+    <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">185.0</span>
+<span class="n">c</span>   <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="mf">40.0</span>
+    <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">115.0</span>
+    <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">190.0</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">99</span><span class="p">]:</span> <span class="n">resampled</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">99</span><span class="p">]:</span>
+<span class="n">key</span>                <span class="n">time</span>  <span class="n">value</span>
+<span class="mi">0</span>   <span class="n">a</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="mf">30.0</span>
+<span class="mi">1</span>   <span class="n">a</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">105.0</span>
+<span class="mi">2</span>   <span class="n">a</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">180.0</span>
+<span class="mi">3</span>   <span class="n">b</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="mf">35.0</span>
+<span class="mi">4</span>   <span class="n">b</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">110.0</span>
+<span class="mi">5</span>   <span class="n">b</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">185.0</span>
+<span class="mi">6</span>   <span class="n">c</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="mf">40.0</span>
+<span class="mi">7</span>   <span class="n">c</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">115.0</span>
+<span class="mi">8</span>   <span class="n">c</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">20</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">190.0</span>
+</pre></div>
+</div>
+<p>使用TimeGrouper的限制是时间必须是Series或DataFrame的索引。</p>
+</div>
+</div>
+<div class="section" id="id9">
+<h2>12.3 链式编程技术<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h2>
+<p>当对数据集进行一系列变换时，你可能发现创建的多个临时变量其实并没有在分析中用到。看下面的例子：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;col2&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df2</span><span class="p">[</span><span class="s1">&#39;col1_demeaned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df2</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">col1_demeaned</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>虽然这里没有使用真实的数据，这个例子却指出了一些新方法。首先，DataFrame.assign方法是一个df[k] = v形式的函数式的列分配方法。它不是就地修改对象，而是返回新的修改过的DataFrame。因此，下面的语句是等价的：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Usual non-functional way</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df2</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+<span class="c1"># Functional assign way</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>就地分配可能会比assign快，但是assign可以方便地进行链式编程：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">col1_demeaned</span><span class="o">=</span><span class="n">df2</span><span class="o">.</span><span class="n">col1</span> <span class="o">-</span> <span class="n">df2</span><span class="o">.</span><span class="n">col2</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+          <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+          <span class="o">.</span><span class="n">col1_demeaned</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>我使用外括号，这样便于添加换行符。</p>
+<p>使用链式编程时要注意，你可能会需要涉及临时对象。在前面的例子中，我们不能使用load_data的结果，直到它被赋值给临时变量df。为了这么做，assign和许多其它pandas函数可以接收类似函数的参数，即可调用对象（callable）。为了展示可调用对象，看一个前面例子的片段：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;col2&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>它可以重写为：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">load_data</span><span class="p">()</span>
+      <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;col2&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>这里，load_data的结果没有赋值给某个变量，因此传递到[ ]的函数在这一步被绑定到了对象。</p>
+<p>我们可以把整个过程写为一个单链表达式：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">load_data</span><span class="p">()</span>
+          <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">col2</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+          <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">col1_demeaned</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">col1</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">col1</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+          <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
+          <span class="o">.</span><span class="n">col1_demeaned</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>是否将代码写成这种形式只是习惯而已，将它分开成若干步可以提高可读性。</p>
+<div class="section" id="id10">
+<h3>管道方法<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h3>
+<p>你可以用Python内置的pandas函数和方法，用带有可调用对象的链式编程做许多工作。但是，有时你需要使用自己的函数，或是第三方库的函数。这时就要用到管道方法。</p>
+<p>看下面的函数调用：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">arg1</span><span class="o">=</span><span class="n">v1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">arg3</span><span class="o">=</span><span class="n">v3</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">arg4</span><span class="o">=</span><span class="n">v4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>当使用接收、返回Series或DataFrame对象的函数式，你可以调用pipe将其重写：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">arg1</span><span class="o">=</span><span class="n">v1</span><span class="p">)</span>
+          <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">arg3</span><span class="o">=</span><span class="n">v3</span><span class="p">)</span>
+          <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">arg4</span><span class="o">=</span><span class="n">v4</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>f(df)和df.pipe(f)是等价的，但是pipe使得链式声明更容易。</p>
+<p>pipe的另一个有用的地方是提炼操作为可复用的函数。看一个从列减去分组方法的例子：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">g</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>假设你想转换多列，并修改分组的键。另外，你想用链式编程做这个转换。下面就是一个方法：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">group_demean</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">by</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">-</span> <span class="n">g</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>然后可以写为：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">col1</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span>
+          <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">group_demean</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;key1&#39;</span><span class="p">,</span> <span class="s1">&#39;key2&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id11">
+<h2>12.4 总结<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p>和其它许多开源项目一样，pandas仍然在不断的变化和进步中。和本书中其它地方一样，这里的重点是放在接下来几年不会发生什么改变且稳定的功能。</p>
+<p>为了深入学习pandas的知识，我建议你学习官方文档，并阅读开发团队发布的文档更新。我们还邀请你加入pandas的开发工作：修改bug、创建新功能、完善文档。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="第13章 Python建模库介绍.html" class="btn btn-neutral float-right" title="第13章 Python建模库介绍.md" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="第11章 时间序列.html" class="btn btn-neutral float-left" title="第11章 时间序列.md" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, 微信公众号：大圣哔哔
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
